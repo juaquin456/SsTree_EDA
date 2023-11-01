@@ -50,9 +50,12 @@ std::vector<NType> CortexAPI::postImage(const std::string& imagePath) {
     }
 
     std::stringstream ss(readBuffer);
+//    std::cout << readBuffer << std::endl;
     NType value;
     std::vector<NType> resultVector;
+    ss.seekg(1);
     while (ss >> value) {
+//        std::cout << value << std::endl;
         resultVector.push_back(value);
         if (ss.peek() == ',') {
             ss.ignore();

@@ -107,7 +107,7 @@ private:
     sf::Sprite selectedSprite;
     std::vector<sf::Texture> resultTextures;
     std::vector<sf::Sprite> resultSprites;
-    SsTree sstree;
+    SsTree sstree{448};
     CortexAPI cortex;
     Button selectButton;
     Button searchButton;
@@ -126,7 +126,7 @@ void ImageSearchApp::init() {
 ImageSearchApp::ImageSearchApp() 
     : window(sf::VideoMode(1200, 800), "Buscador de Imágenes"),
       selectButton(10, 10, 100, 50, "Seleccionar"),
-      searchButton(120, 10, 100, 50, "Buscar") { 
+      searchButton(120, 10, 100, 50, "Buscar") {
     sstree.loadFromFile("embbeding.dat");
     init();
 }
@@ -197,10 +197,12 @@ void ImageSearchApp::searchImages() {
         std::vector<NType> imageVec = cortex.postImage(filepath_of_selected_image);
         auto paths = sstree.kNNQuery(Point(imageVec), 6);
 
+
         resultTextures.clear();
         resultSprites.clear();
         
         for (const auto &path : paths) {
+            std::cout << path << std::endl;
             sf::Texture texture;
             if (texture.loadFromFile(path)) {
                 resultTextures.push_back(texture);

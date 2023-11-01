@@ -52,7 +52,7 @@ ImageData readEmbeddingsFromJson(const std::string& FILE_NAME) {
             if (path.empty()) {
                 throw std::runtime_error("Uno de los paths está vacío.");
             }
-            std::cout << "Guardado path: " << path << std::endl;
+//            std::cout << "Guardado path: " << path << std::endl;
         }
 
     } catch (std::exception& e) {
@@ -63,19 +63,44 @@ ImageData readEmbeddingsFromJson(const std::string& FILE_NAME) {
 }
 
 
+//int main() {
+//    const std::string FILE_NAME("embedding.json");
+//    ImageData data = readEmbeddingsFromJson(FILE_NAME);
+//
+//    SsTree tree(448);
+//    for (size_t i = 0; i < data.embeddings.size(); ++i) {
+//        tree.insert(data.embeddings[i], data.paths[i]);
+//        if (i%1000 == 0) tree.printRadius();
+//    }
+//    tree.printRadius();
+//    tree.printChildRadius();
+//    std::string filename = "embbeding.dat";
+//    tree.saveToFile(filename);
+//    tree.kNNQuery(Point(448), 10);
+//    return 0;
+//}
+
 int main() {
     const std::string FILE_NAME("embedding.json");
     ImageData data = readEmbeddingsFromJson(FILE_NAME);
 
-    SsTree tree;
-    for (size_t i = 0; i < data.embeddings.size(); ++i) {
-        tree.insert(data.embeddings[i], data.paths[i]);
+    SsTree tree(448);
+    tree.loadFromFile("embbeding.dat");
+    std::cout << "Info del árbol cargado: " << std::endl;
+    tree.printRadius();
+    tree.printChildRadius();
+    std::cout << "--------------------------" << std::endl;
+    std::cout << "10 - nn query with index: point(0, 0, 0....)" << std::endl;
+    tree.kNNQuery(Point(448), 10);
+    std::cout << "10 - nn query with exhaustive search: point(0, 0, 0....)" << std::endl;
+    std::greater<NType> greater;
+    std::priority_queue<NType, std::vector<NType > ,decltype(greater)> distances(greater);
+    for(size_t i = 0; i < data.embeddings.size(); ++i) {
+        distances.push(distance(Point(448), data.embeddings[i]));
     }
-
-    std::string filename = "embbeding.dat";
-    tree.saveToFile(filename);
-
-    return 0;
+    for (size_t i = 0; i < 10; ++i) {
+        std::cout << distances.top() << std::endl;
+        distances.pop();
+    }
+    std::cout << "--------------------------" << std::endl;
 }
-
-

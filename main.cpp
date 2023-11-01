@@ -17,7 +17,7 @@ int main() {
     }
 
     // Insert the points into the SStree
-    SsTree tree;
+    SsTree tree(50);
     for (auto& point : points) {
         tree.insert(point);
     }
@@ -28,6 +28,14 @@ int main() {
     tree = SsTree();    // Clean the tree
     tree.loadFromFile(filename);
 
-
+    tree.kNNQuery(Point(50), 10);
     return 0;
 }
+
+//int main() {
+//    SsTree tree(448);
+////    tree.D = 448;
+//    tree.loadFromFile("embbeding.dat");
+//    tree.print();
+//    tree.kNNQuery(Point(448), 10);
+//}

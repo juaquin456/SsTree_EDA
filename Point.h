@@ -94,6 +94,17 @@ public:
         return *this;
     }
 
+    NType operator*(Point other) {
+        NType result = 0;
+        for (size_t i = 0; i < dim(); ++i) {
+            result += coordinates[i] * other.coordinates[i];
+        }
+        return result;
+    }
+
+    Point unit() const {
+        return *this / norm();
+    }
     // Funciones auxiliares
     size_t dim() const {
         return coordinates.size();
@@ -154,7 +165,7 @@ public:
     }
 };
 
-NType distance(const Point& a, const Point& b) {
+inline NType distance(const Point& a, const Point& b) {
     if (a.dim() != b.dim()) {
         throw std::runtime_error("Los puntos deben tener la misma dimensión");
     }
@@ -164,7 +175,7 @@ NType distance(const Point& a, const Point& b) {
     }
     return NType::sqrt(sum);
 }
-NType manhattanDistance(const Point& a, const Point& b) {
+inline NType manhattanDistance(const Point& a, const Point& b) {
     if (a.dim() != b.dim()) {
         throw std::runtime_error("Los puntos deben tener la misma dimensión");
     }
@@ -174,7 +185,7 @@ NType manhattanDistance(const Point& a, const Point& b) {
     }
     return sum;
 }
-NType chebyshevDistance(const Point& a, const Point& b) {
+inline NType chebyshevDistance(const Point& a, const Point& b) {
     if (a.dim() != b.dim()) {
         throw std::runtime_error("Los puntos deben tener la misma dimensión");
     }
@@ -184,7 +195,7 @@ NType chebyshevDistance(const Point& a, const Point& b) {
     }
     return maxDiff;
 }
-NType minkowskiDistance(const Point& a, const Point& b, int p) {
+inline NType minkowskiDistance(const Point& a, const Point& b, int p) {
     if (a.dim() != b.dim()) {
         throw std::runtime_error("Los puntos deben tener la misma dimensión");
     }
@@ -197,6 +208,8 @@ NType minkowskiDistance(const Point& a, const Point& b, int p) {
     }
     return NType::pow(sum, 1.0 / p);
 }
+
+
 
 
 #endif // !POINT_H
