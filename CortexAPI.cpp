@@ -30,13 +30,13 @@ std::vector<NType> CortexAPI::postImage(const std::string& imagePath) {
                      CURLFORM_CONTENTTYPE, "image/jpeg",
                      CURLFORM_END);
 
-        curl_easy_setopt(curl, CURLOPT_URL, "https://7m15gatms9.execute-api.us-east-1.amazonaws.com/v1/embeddings");
+        curl_easy_setopt(curl, CURLOPT_URL, URL_API_XXXXXX__);
         curl_easy_setopt(curl, CURLOPT_HTTPPOST, post);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
         curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
         struct curl_slist* list = NULL;
-        list = curl_slist_append(list, "x-api-key: eJLlLzKise4B1Bl7DC6XQrbGcIpShDD5eaC9XNl2");
+        list = curl_slist_append(list, "x-api-key: API_KEY_XXXXX___");
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, list);
 
         res = curl_easy_perform(curl);
